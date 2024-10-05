@@ -23,7 +23,7 @@ public class ScreenDTO {
                 .build();
     }
 
-    public static ScreenDTO from(Screen screen){
+    public static ScreenDTO fromScreen(Screen screen){
         return ScreenDTO.builder()
                 .id(screen.getId())
                 .name(screen.getName())
