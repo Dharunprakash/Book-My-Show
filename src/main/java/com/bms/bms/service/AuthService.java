@@ -39,4 +39,8 @@ public class AuthService {
 
         return Optional.empty();
     }
+
+    public Optional<User> getUserById(Long id) {
+        return userDao.findById(id);
+    }
 }
