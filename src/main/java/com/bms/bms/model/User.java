@@ -1,5 +1,6 @@
 package com.bms.bms.model;
 
+import com.bms.bms.annotations.RelationField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class User {
     private String password;
     private String phone;
     private String email;
+    @RelationField("bookings")
     private List<Booking> bookings; // List of bookings associated with the user
 
 }

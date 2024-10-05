@@ -1,5 +1,7 @@
 package com.bms.bms.utils;
 
+import com.bms.bms.annotations.RelationField;
+
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -13,14 +15,16 @@ import java.util.function.Function;
 public class ResultSetMapper {
 
     private static final Map<Class<?>, Function<Object, ?>> typeConverters = new HashMap<>();
+
     public static String toSnakeCase(String camelCase) {
         String regex = "([a-z])([A-Z]+)";
         String replacement = "$1_$2";
         return camelCase.replaceAll(regex, replacement).toLowerCase();
     }
+
     static {
         typeConverters.put(long.class, value -> ((Number) value).longValue());
-        typeConverters.put(Long.class, value -> ((Number) value).longValue()); // Added converter for Long
+        typeConverters.put(Long.class, value -> ((Number) value).longValue());
         typeConverters.put(int.class, value -> ((Number) value).intValue());
         typeConverters.put(Integer.class, value -> ((Number) value).intValue());
         typeConverters.put(double.class, value -> ((Number) value).doubleValue());
@@ -33,8 +37,7 @@ public class ResultSetMapper {
         typeConverters.put(java.sql.Date.class, value -> value instanceof Timestamp ? new java.sql.Date(((Timestamp) value).getTime()) : value);
         typeConverters.put(Timestamp.class, value -> value instanceof Timestamp ? (Timestamp) value : new Timestamp(((java.sql.Date) value).getTime()));
         typeConverters.put(BigDecimal.class, value -> new BigDecimal(value.toString()));
-        typeConverters.put(BigInteger.class, value -> ((BigInteger) value).longValue()); // Added converter for BigInteger
-        // Add more type converters as needed
+        typeConverters.put(BigInteger.class, value -> ((BigInteger) value).longValue());
     }
 
     public static <T> T mapResultSetToObject(ResultSet rs, Class<T> clazz) throws SQLException {
@@ -43,6 +46,11 @@ public class ResultSetMapper {
             Field[] fields = clazz.getDeclaredFields();
 
             for (Field field : fields) {
+                if (field.isAnnotationPresent(RelationField.class)) {
+                    System.out.println("Skipping field with @RelationField annotation");
+                    continue; // Skip fields with @RelationField annotation
+                }
+
                 field.setAccessible(true);
                 String columnName = toSnakeCase(field.getName());
                 Object value = rs.getObject(columnName);
@@ -60,7 +68,7 @@ public class ResultSetMapper {
                     }
                 }
             }
-
+            System.out.println("NOTE: Mapping ResultSet to object successful" + instance);
             return instance;
         } catch (Exception e) {
             throw new RuntimeException("Error mapping ResultSet to object", e);

@@ -37,7 +37,9 @@ public class UserDaoImpl implements UserDao {
             User user = null;
             if(rs.next()){
                 user = ResultSetMapper.mapResultSetToObject(rs, User.class);
+                System.out.println("User "+user);
             }
+            System.out.println("DOne "+user);
             return Optional.ofNullable(user);
         } catch (IllegalAccessException | SQLException e) {
             throw new RuntimeException(e);

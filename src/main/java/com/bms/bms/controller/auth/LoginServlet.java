@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
         User user = HttpRequestParser.parse(req, User.class);
 
         Optional<User> userOpt = authService.loginUser(user);
-
+        System.out.println("userOpt: " + userOpt);
         if (userOpt.isEmpty()) {
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_UNAUTHORIZED, "Invalid credentials", null);
             return;
@@ -39,13 +39,15 @@ public class LoginServlet extends HttpServlet {
         // Generate token
         String token = TokenUtil.generateToken(sessionUser.getId().toString());
 
+        System.out.println("token: " + token);
+
         // Set token as cookie
         Cookie tokenCookie = new Cookie("AUTH_TOKEN", token);
         tokenCookie.setHttpOnly(true);
         tokenCookie.setSecure(true);
         tokenCookie.setPath("/");
         tokenCookie.setMaxAge(30 * 60); // 30 minutes expiration
-
+        System.out.println("tokenCookie: " + tokenCookie.getMaxAge());
         resp.addCookie(tokenCookie);
         ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Login successful", sessionUser);
     }
