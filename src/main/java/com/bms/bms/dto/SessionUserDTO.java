@@ -15,6 +15,7 @@ public class SessionUserDTO {
     private String name;
     private String email;
     private String phone;
+    private User.Role role;
 
     public static SessionUserDTO fromUser(User user) {
         return SessionUserDTO.builder()
@@ -22,6 +23,7 @@ public class SessionUserDTO {
                 .name(user.getName())
                 .email(user.getEmail())
                 .phone(user.getPhone())
+                .role(user.getRole())
                 .build();
     }
 
@@ -31,6 +33,7 @@ public class SessionUserDTO {
                 .name(name)
                 .email(email)
                 .phone(phone)
+                .role(role)
                 .build();
     }
 }

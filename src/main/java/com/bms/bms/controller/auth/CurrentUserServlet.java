@@ -36,7 +36,8 @@ public class CurrentUserServlet extends HttpServlet {
 
         try {
             Claims claims = TokenUtil.validateToken(token);
-            String userId = claims.getSubject();
+            String userIdRole = claims.getSubject();
+            String userId = userIdRole.split("-")[0];
             var user = authService.getUserById(Long.parseLong(userId));
             if (user.isEmpty()) {
                 ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_UNAUTHORIZED, "User not found", null);

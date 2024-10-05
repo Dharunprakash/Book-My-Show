@@ -22,7 +22,8 @@ public class UserDaoImpl implements UserDao {
     public User save(User user) {
         try {
             QueryResult queryResult = queryBuilderUtil.createInsertQuery("users", user);
-            queryBuilderUtil.executeDynamicQuery(connection, queryResult);
+            Long id = queryBuilderUtil.executeDynamicQuery(connection, queryResult, Long.class);
+            user.setId(id);
             return user;
         } catch (IllegalAccessException | SQLException e) {
             throw new RuntimeException(e);

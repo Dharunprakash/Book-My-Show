@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
         var sessionUser = SessionUserDTO.fromUser(userOpt.get());
 
         // Generate token
-        String token = TokenUtil.generateToken(sessionUser.getId().toString());
+        String token = TokenUtil.generateToken(sessionUser.getId().toString()+"-"+sessionUser.getRole().name());
 
         System.out.println("token: " + token);
 
