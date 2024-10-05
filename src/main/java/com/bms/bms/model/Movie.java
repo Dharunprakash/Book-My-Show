@@ -1,5 +1,6 @@
 package com.bms.bms.model;
 
+import com.bms.bms.annotations.RelationField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class Movie {
     private String duration;
     private String releaseDate;
     private Float rating;
+    @RelationField("showtimes")
     private List<Showtime> showtimes;
 }
 

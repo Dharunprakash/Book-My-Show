@@ -33,4 +33,15 @@ public class ObjectManipulatorUtil {
     public static void nullifyField(Object obj, String fieldName) throws IllegalAccessException {
         nullifyFields(obj, List.of(fieldName));
     }
+
+    public static Boolean isAllFieldsNull(Object obj) throws IllegalAccessException {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            if (field.get(obj) != null) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
