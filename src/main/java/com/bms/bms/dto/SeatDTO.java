@@ -23,7 +23,7 @@ public class SeatDTO {
                 .build();
     }
 
-    public static SeatDTO from(Seat seat){
+    public static SeatDTO fromSeat(Seat seat){
         return SeatDTO.builder()
                 .id(seat.getId())
                 .screenId(seat.getScreenId())
