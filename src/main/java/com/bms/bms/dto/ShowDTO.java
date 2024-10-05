@@ -9,6 +9,6 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScreeningDTO extends TheatreDTO {
+public class ShowDTO extends MovieDTO {
     private List<ScreenShowtimeDTO> showtimeDetails;
 }
