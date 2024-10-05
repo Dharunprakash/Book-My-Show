@@ -9,7 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
 public class DetailedBookingDTO extends CreateBookingDTO {
     private TheatreDTO theatre;
     private MovieDTO movie;

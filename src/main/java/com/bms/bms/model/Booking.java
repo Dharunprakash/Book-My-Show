@@ -15,5 +15,5 @@ public class Booking {
     private Long id;
     private Long userId;
     private Long showtimeId;
-    private List<BookingSeats> bookedSeats;
+    private List<BookingSeat> bookedSeats;
 }

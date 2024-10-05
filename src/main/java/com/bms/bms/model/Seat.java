@@ -15,5 +15,5 @@ public class Seat {
     private Long id;
     private Long screenId;
     private Integer seatNumber;
-    private List<BookingSeats> bookedSeats;
+    private List<BookingSeat> bookedSeats;
 }

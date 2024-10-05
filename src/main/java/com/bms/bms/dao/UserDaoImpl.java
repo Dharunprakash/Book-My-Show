@@ -72,4 +72,34 @@ public class UserDaoImpl implements UserDao {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        try{
+            QueryResult queryResult = queryBuilderUtil.createSelectQuery("users", User.builder().email(email).build());
+            ResultSet rs = queryBuilderUtil.executeDynamicSelectQuery(connection, queryResult);
+            User user = null;
+            if(rs.next()){
+                user = ResultSetMapper.mapResultSetToObject(rs, User.class);
+            }
+            return Optional.ofNullable(user);
+        } catch (IllegalAccessException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> findByPhone(String phone) {
+        try{
+            QueryResult queryResult = queryBuilderUtil.createSelectQuery("users", User.builder().phone(phone).build());
+            ResultSet rs = queryBuilderUtil.executeDynamicSelectQuery(connection, queryResult);
+            User user = null;
+            if(rs.next()){
+                user = ResultSetMapper.mapResultSetToObject(rs, User.class);
+            }
+            return Optional.ofNullable(user);
+        } catch (IllegalAccessException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
