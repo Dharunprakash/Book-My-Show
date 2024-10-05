@@ -1,5 +1,16 @@
 package com.bms.bms.dto;
 
-public class UserDTO {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDTO {
+    private Long id;
+    private String username;
+    private String phone;
 }
