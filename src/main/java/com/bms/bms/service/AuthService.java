@@ -2,18 +2,16 @@ package com.bms.bms.service;
 
 
 import com.bms.bms.dao.UserDao;
+import com.bms.bms.dao.UserDaoImpl;
 import com.bms.bms.model.User;
+import com.bms.bms.utils.DataBaseUtil;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Optional;
 
 public class AuthService {
 
-    private final UserDao userDao;
-
-    public AuthService(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    private final UserDao userDao = new UserDaoImpl();
 
     public Optional<User> registerUser(User user) {
 
@@ -29,13 +27,7 @@ public class AuthService {
 
     public Optional<User> loginUser(User user) {
         // Find user by email or phone
-        Optional<User> userOpt = userDao.findByEmail(user.getEmail())
-                .or(() -> userDao.findByPhone(user.getPhone()));
 
-        if (userOpt.isEmpty() || !BCrypt.checkpw(user.getPassword(), userOpt.get().getPassword())) {
-            return Optional.empty();  // Invalid login
-        }
 
-        return userOpt;  // Return the authenticated user
     }
 }

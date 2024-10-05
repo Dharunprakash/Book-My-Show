@@ -142,6 +142,29 @@ public class QueryBuilderUtil {
     }
 
     /**
+     * create dynamic delete query
+     *
+     * @param tableName
+     * @param obj
+     * @return
+     * @throws IllegalAccessException
+     */
+    public QueryResult createDeleteQuery(String tableName, Object obj) throws IllegalAccessException {
+        StringBuilder whereClause = new StringBuilder("DELETE FROM ").append(tableName).append(" WHERE ");
+        List<Object> params = new ArrayList<>();
+        boolean firstCondition = true;
+
+        buildWhereClause(obj, whereClause, params, firstCondition);
+
+
+        whereClause.append(";");
+        return new QueryResult(whereClause.toString(), params);  // Return query and parameters
+    }
+
+
+
+
+    /**
      * Executes a dynamic query.
      *
      * @param connection the database connection

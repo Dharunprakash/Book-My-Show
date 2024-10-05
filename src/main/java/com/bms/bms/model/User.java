@@ -13,9 +13,12 @@ import java.util.List;
 @Data
 public class User {
     private Long id;
-    private String username;
+    private String name;
     private String password;
     private String phone;
+    private String email;
     private List<Booking> bookings; // List of bookings associated with the user
+
 }
+
 

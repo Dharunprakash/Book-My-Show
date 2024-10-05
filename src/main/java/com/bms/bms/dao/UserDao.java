@@ -1,4 +1,6 @@
 package com.bms.bms.dao;
 
-public interface UserDao {
+import com.bms.bms.model.User;
+
+public interface UserDao extends  GenericDao<User, Long> {
 }
