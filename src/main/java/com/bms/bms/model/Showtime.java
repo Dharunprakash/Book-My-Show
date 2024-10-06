@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -15,7 +16,7 @@ public class Showtime {
     private Long id;
     private Long screenId;
     private Long movieId;
-    private Date startTime;
+    private LocalDateTime startTime;
     private Float price;
     private Integer availableSeats;
     private List<Booking> bookings;

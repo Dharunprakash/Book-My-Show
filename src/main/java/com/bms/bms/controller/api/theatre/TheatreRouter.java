@@ -1,5 +1,6 @@
 package com.bms.bms.controller.api.theatre;
 
+import com.bms.bms.dto.ShowDTO;
 import com.bms.bms.router.Router;
 import com.bms.bms.service.TheatreService;
 import com.bms.bms.dto.TheatreDTO;
@@ -25,6 +26,7 @@ public class TheatreRouter {
         router.get("/", this::getAllTheatre);
         router.post("/", this::createTheatre);
         router.put("/:id", this::updateTheatre);
+        router.get("/:id/shows", this::getShows);
         router.delete("/:id", this::deleteTheatre);
     }
 
@@ -50,6 +52,18 @@ public class TheatreRouter {
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Theatres found", theatres);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error in getAllTheatre", e);
+            handleException(req, resp, e);
+        }
+    }
+
+    private void getShows(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            System.out.println("TheatreRouter getShows");
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)/shows", TheatreParams.class);
+            List<ShowDTO> theatres = theatreService.getShowsByTheatreId(params.getId());
+            ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Shows found", theatres);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error in getShows", e);
             handleException(req, resp, e);
         }
     }

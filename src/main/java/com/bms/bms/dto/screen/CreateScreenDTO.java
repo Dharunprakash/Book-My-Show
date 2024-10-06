@@ -1,5 +1,6 @@
 package com.bms.bms.dto.screen;
 
+import com.bms.bms.annotations.JoinMappingId;
 import com.bms.bms.model.Screen;
 import lombok.Getter;
 import lombok.Setter;

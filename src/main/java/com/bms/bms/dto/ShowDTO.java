@@ -11,4 +11,15 @@ import java.util.List;
 @AllArgsConstructor
 public class ShowDTO extends MovieDTO {
     private List<ScreenShowtimeDTO> showtimeDetails;
+
+    public static ShowDTO fromMovieDTO(MovieDTO movieDTO) {
+        var showDTO = new ShowDTO();
+        showDTO.setId(movieDTO.getId());
+        showDTO.setName(movieDTO.getName());
+        showDTO.setGenre(movieDTO.getGenre());
+        showDTO.setDuration(movieDTO.getDuration());
+        showDTO.setLanguage(movieDTO.getLanguage());
+        showDTO.setReleaseDate(movieDTO.getReleaseDate());
+        return showDTO;
+    }
 }

@@ -1,5 +1,6 @@
 package com.bms.bms.dto;
 
+import com.bms.bms.annotations.JoinMappingId;
 import com.bms.bms.model.Showtime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,14 +8,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShowtimeDTO {
+    @JoinMappingId("showtime_id")
     private Long id;
-    private Date startTime;
+    private LocalDateTime startTime;
     private Long screenId;
     private Float price;
 

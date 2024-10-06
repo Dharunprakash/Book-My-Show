@@ -1,5 +1,6 @@
 package com.bms.bms.model;
 
+import com.bms.bms.annotations.JoinMappingId;
 import com.bms.bms.annotations.RelationField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Movie {
+    @JoinMappingId("movie_id")
     private Long id;
+    @JoinMappingId("movie_name")
     private String name;
     private String language;
     private String genre;

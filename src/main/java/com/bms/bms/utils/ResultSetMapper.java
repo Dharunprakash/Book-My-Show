@@ -1,5 +1,6 @@
 package com.bms.bms.utils;
 
+import com.bms.bms.annotations.JoinMappingId;
 import com.bms.bms.annotations.RelationField;
 
 import java.lang.reflect.Field;
@@ -8,6 +9,7 @@ import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -39,25 +41,33 @@ public class ResultSetMapper {
         typeConverters.put(BigDecimal.class, value -> new BigDecimal(value.toString()));
         typeConverters.put(BigInteger.class, value -> ((BigInteger) value).longValue());
     }
-
     public static <T> T mapResultSetToObject(ResultSet rs, Class<T> clazz) throws SQLException {
+        return mapResultSetToObject(rs, clazz, false);
+    }
+    public static <T> T mapResultSetToObject(ResultSet rs, Class<T> clazz, Boolean mapFieldName) throws SQLException {
         try {
             T instance = clazz.getDeclaredConstructor().newInstance();
             Field[] fields = clazz.getDeclaredFields();
 
             for (Field field : fields) {
+                System.out.println("Field: " + field.getName());
                 if (field.isAnnotationPresent(RelationField.class)) {
                     System.out.println("Skipping field with @RelationField annotation");
                     continue; // Skip fields with @RelationField annotation
                 }
-
                 field.setAccessible(true);
                 String columnName = toSnakeCase(field.getName());
+                System.out.println("Column Name: " + columnName);
+                if(mapFieldName && field.isAnnotationPresent(JoinMappingId.class)){
+                    columnName = field.getAnnotation(JoinMappingId.class).value();
+                    System.out.println("COLUNAME: "+columnName);
+                }
                 Object value = rs.getObject(columnName);
 
                 if (value != null) {
                     Function<Object, ?> converter = typeConverters.get(field.getType());
                     if (converter != null) {
+                        System.out.println("Converter found for field: " + field.getName()+" "+field.getType());
                         field.set(instance, converter.apply(value));
                     } else if (field.getType().isEnum()) {
                         @SuppressWarnings("unchecked")

@@ -1,5 +1,6 @@
 package com.bms.bms.model;
 
+import com.bms.bms.annotations.JoinMappingId;
 import com.bms.bms.annotations.RelationField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class Theatre {
+    @JoinMappingId("theatre_id")
     private Long id;
     private String name;
     private String location;

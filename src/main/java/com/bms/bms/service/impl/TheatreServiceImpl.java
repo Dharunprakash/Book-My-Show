@@ -2,6 +2,7 @@ package com.bms.bms.service.impl;
 
 import com.bms.bms.dao.TheatreDao;
 import com.bms.bms.dao.impl.TheatreDaoImpl;
+import com.bms.bms.dto.ShowDTO;
 import com.bms.bms.dto.TheatreDTO;
 import com.bms.bms.model.Theatre;
 import com.bms.bms.service.TheatreService;
@@ -26,6 +27,11 @@ public class TheatreServiceImpl implements TheatreService {
     public TheatreDTO getTheatreById(Long id) {
         Optional<Theatre> theatre = theatreDao.findById(id);
         return theatre.map(TheatreDTO::from).orElse(null);
+    }
+
+    @Override
+    public List<ShowDTO> getShowsByTheatreId(Long theatreId) {
+        return theatreDao.getShowsByTheatreId(theatreId);
     }
 
     @Override
