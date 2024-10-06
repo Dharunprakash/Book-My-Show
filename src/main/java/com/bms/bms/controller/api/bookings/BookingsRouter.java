@@ -1,6 +1,7 @@
 package com.bms.bms.controller.api.bookings;
 
 import com.bms.bms.dto.BookingDTO;
+import com.bms.bms.dto.CreateBookingDTO;
 import com.bms.bms.router.Router;
 import com.bms.bms.service.BookingService;
 import com.bms.bms.service.impl.BookingServiceImpl;
@@ -12,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,8 +60,8 @@ public class BookingsRouter {
 
     private void createBooking(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            BookingDTO bookingDTO = HttpRequestParser.parse(req, BookingDTO.class);
-            BookingDTO createdBooking = bookingService.createBooking(bookingDTO);
+            CreateBookingDTO bookingDTO = HttpRequestParser.parse(req, CreateBookingDTO.class);
+            CreateBookingDTO createdBooking = bookingService.createBooking(bookingDTO);
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_CREATED, "Booking created", createdBooking);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error in createBooking", e);

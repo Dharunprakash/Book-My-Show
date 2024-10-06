@@ -2,6 +2,7 @@ package com.bms.bms.dao.impl;
 
 import com.bms.bms.dao.BookingDao;
 import com.bms.bms.dto.BookingDTO;
+import com.bms.bms.dto.CreateBookingDTO;
 import com.bms.bms.model.Booking;
 import com.bms.bms.utils.DataBaseUtil;
 import com.bms.bms.utils.QueryBuilderUtil;
@@ -26,7 +27,7 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public BookingDTO save(BookingDTO booking) {
+    public CreateBookingDTO save(CreateBookingDTO booking) {
         try {
             QueryResult queryResult = queryBuilderUtil.createInsertQuery(tableName, booking);
             Long id = queryBuilderUtil.executeDynamicQuery(connection, queryResult, Long.class);

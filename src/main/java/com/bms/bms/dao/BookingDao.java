@@ -1,12 +1,13 @@
 package com.bms.bms.dao;
 
 import com.bms.bms.dto.BookingDTO;
+import com.bms.bms.dto.CreateBookingDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BookingDao {
-    BookingDTO save(BookingDTO booking);
+    CreateBookingDTO save(CreateBookingDTO booking);
     Optional<BookingDTO> findById(Long id);
     List<BookingDTO> findAll();
     BookingDTO update(BookingDTO booking);

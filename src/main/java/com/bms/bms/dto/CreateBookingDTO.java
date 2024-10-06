@@ -12,13 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateBookingDTO {
-    private Long id;
     private Long userId;
     private Long showtimeId;
 
     public Booking toBooking(){
         return Booking.builder()
-                .id(id)
                 .userId(userId)
                 .showtimeId(showtimeId)
                 .build();
@@ -26,7 +24,6 @@ public class CreateBookingDTO {
 
     public static CreateBookingDTO from(Booking booking){
         return CreateBookingDTO.builder()
-                .id(booking.getId())
                 .userId(booking.getUserId())
                 .showtimeId(booking.getShowtimeId())
                 .build();
