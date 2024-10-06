@@ -1,4 +1,5 @@
 package com.bms.bms.model;
+import com.bms.bms.annotations.RelationField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class Showtime {
     private LocalDateTime startTime;
     private Float price;
     private Integer availableSeats;
+    @RelationField("bookings")
     private List<Booking> bookings;
 }
 

@@ -1,5 +1,6 @@
 package com.bms.bms.model;
 
+import com.bms.bms.annotations.RelationField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class Booking {
     private Long id;
     private Long userId;
     private Long showtimeId;
-    private List<BookingSeat> bookedSeats;
+    @RelationField("bookedSeats")
+    private List<Seat> bookedSeats;
 }

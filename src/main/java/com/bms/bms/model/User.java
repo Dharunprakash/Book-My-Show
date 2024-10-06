@@ -21,7 +21,6 @@ public class User {
     private Role role;
     @RelationField("bookings")
     private List<Booking> bookings; // List of bookings associated with the user
-
     public enum Role {
         ADMIN, USER
     }
