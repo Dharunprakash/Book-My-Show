@@ -95,8 +95,6 @@ public class Router {
         for (Route route : routes) {
             Matcher matcher = route.getPattern().matcher(path);
             if (matcher.matches()) {
-                Map<String, String> params = extractParams(route.getPattern(), path);
-                req.setAttribute("routeParams", params);
                 route.getHandler().accept(req, resp);
                 return;
             }
@@ -105,19 +103,4 @@ public class Router {
         resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Route not found");
     }
 
-    private Map<String, String> extractParams(Pattern pattern, String path) {
-        Map<String, String> params = new HashMap<>();
-        Matcher matcher = pattern.matcher(path);
-
-        if (matcher.matches()) {
-            Pattern paramPattern = Pattern.compile(":([a-zA-Z][a-zA-Z0-9_]*)");
-            Matcher paramMatcher = paramPattern.matcher(pattern.pattern());
-
-            int i = 1;
-            while (paramMatcher.find()) {
-                params.put(paramMatcher.group(1), matcher.group(i++));
-            }
-        }
-        return params;
-    }
 }

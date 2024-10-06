@@ -11,13 +11,10 @@ import java.sql.*;
 import java.util.*;
 
 public class TheatreDaoImpl implements TheatreDao {
-    private final Connection connection;
+    private final Connection connection = DataBaseUtil.getConnection();
     private final String tableName = "theater";
     private final QueryBuilderUtil queryBuilderUtil = new QueryBuilderUtil();
 
-    public TheatreDaoImpl() {
-        this.connection = DataBaseUtil.getConnection();
-    }
 
     @Override
     public Theatre save(Theatre theatre) {

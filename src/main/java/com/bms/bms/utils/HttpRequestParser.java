@@ -58,7 +58,6 @@ public class HttpRequestParser {
     public static <T> T parse(HttpServletRequest request, Class<T> clazz, Map<String, String> pathParams) throws IOException {
         String contentType = request.getContentType();
 
-//        { query: ..., body: ..., params: ... }
         var data = new HashMap<String, Object>();
 
         if ("application/json".equals(contentType)) {

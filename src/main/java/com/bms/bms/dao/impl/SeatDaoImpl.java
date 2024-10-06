@@ -8,6 +8,7 @@ import com.bms.bms.utils.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,8 +50,18 @@ public class SeatDaoImpl implements SeatDao {
 
     @Override
     public List<Seat> findAll() {
-        // Implement database logic to find all seats
-        return null;
+        try {
+            QueryResult queryResult = queryBuilderUtil.createSelectQuery(tableName, Seat.builder().build());
+            ResultSet rs = queryBuilderUtil.executeDynamicSelectQuery(connection, queryResult);
+            List<Seat> seats = new ArrayList<>();
+            while (rs.next()) {
+                Seat seat = ResultSetMapper.mapResultSetToObject(rs, Seat.class);
+                seats.add(seat);
+            }
+            return seats;
+        } catch (IllegalAccessException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -76,7 +87,18 @@ public class SeatDaoImpl implements SeatDao {
 
     @Override
     public List<SeatDTO> getSeatsByScreenId(Long screenId) {
-        // Implement database logic to fetch seats by screen ID
-        return null;
+        try {
+            QueryResult queryResult = queryBuilderUtil.createSelectQuery(tableName, Seat.builder().screenId(screenId).build());
+            ResultSet rs = queryBuilderUtil.executeDynamicSelectQuery(connection, queryResult);
+            List<SeatDTO> seats = new ArrayList<>();
+            while (rs.next()) {
+                Seat seat = ResultSetMapper.mapResultSetToObject(rs, Seat.class);
+                SeatDTO seatDTO = SeatDTO.fromSeat(seat);
+                seats.add(seatDTO);
+            }
+            return seats;
+        } catch (IllegalAccessException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
