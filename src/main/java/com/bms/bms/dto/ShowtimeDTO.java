@@ -18,7 +18,7 @@ public class ShowtimeDTO {
     private Long screenId;
     private Float price;
 
-    public static ShowtimeDTO from(Showtime showtime) {
+    public static ShowtimeDTO fromShowtime(Showtime showtime) {
         return ShowtimeDTO.builder()
                 .id(showtime.getId())
                 .startTime(showtime.getStartTime())

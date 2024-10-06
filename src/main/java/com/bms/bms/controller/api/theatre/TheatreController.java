@@ -8,17 +8,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/api/theatre/*")
+@WebServlet("/api/theatres/*")
 public class TheatreController extends HttpServlet {
 
     private Router router;
 
     public void init() throws ServletException {
-        router = new Router("/bms_war_exploded/api/theatre");
+        router = new Router("/bms_war_exploded/api/theatres");
+        new TheatreRouter().register(router);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("TheatreController doGet");
         router.handle(req, resp);
     }
 

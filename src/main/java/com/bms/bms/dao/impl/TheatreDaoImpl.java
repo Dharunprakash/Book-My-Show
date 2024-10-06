@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class TheatreDaoImpl implements TheatreDao {
     private final Connection connection;
-    private final String tableName = "theatre";
+    private final String tableName = "theater";
     private final QueryBuilderUtil queryBuilderUtil = new QueryBuilderUtil();
 
     public TheatreDaoImpl() {

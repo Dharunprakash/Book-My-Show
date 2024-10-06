@@ -3,6 +3,7 @@ package com.bms.bms.controller.api.theatre;
 import com.bms.bms.router.Router;
 import com.bms.bms.service.TheatreService;
 import com.bms.bms.dto.TheatreDTO;
+import com.bms.bms.service.impl.TheatreServiceImpl;
 import com.bms.bms.utils.HttpRequestParser;
 import com.bms.bms.utils.PathParamExtractor;
 import com.bms.bms.utils.ResponseUtil;
@@ -16,24 +17,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TheatreRouter {
-    private final TheatreService theatreService;
+    private final TheatreService theatreService = new TheatreServiceImpl();
     private static final Logger LOGGER = Logger.getLogger(TheatreRouter.class.getName());
 
-    public TheatreRouter(TheatreService theatreService) {
-        this.theatreService = theatreService;
-    }
-
     public void register(Router router) {
-        router.get("/theatre/:id", this::getTheatre);
-        router.get("/theatre", this::getAllTheatre);
-        router.post("/theatre", this::createTheatre);
-        router.put("/theatre/:id", this::updateTheatre);
-        router.delete("/theatre/:id", this::deleteTheatre);
+        router.get("/:id", this::getTheatre);
+        router.get("", this::getAllTheatre);
+        router.post("", this::createTheatre);
+        router.put("/:id", this::updateTheatre);
+        router.delete("/:id", this::deleteTheatre);
     }
 
     private void getTheatre(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatre/(\\d+)", TheatreParams.class);
+            System.out.println("TheatreRouter getTheatre");
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)", TheatreParams.class);
             TheatreDTO theatre = theatreService.getTheatreById(params.getId());
             if (theatre != null) {
                 ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Theatre found", theatre);
@@ -69,7 +67,7 @@ public class TheatreRouter {
 
     private void updateTheatre(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatre/(\\d+)", TheatreParams.class);
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)", TheatreParams.class);
             TheatreDTO theatreDTO = HttpRequestParser.parse(req, TheatreDTO.class);
             theatreDTO.setId(params.getId());
             TheatreDTO updatedTheatre = theatreService.updateTheatre(params.getId(), theatreDTO);
@@ -82,7 +80,7 @@ public class TheatreRouter {
 
     private void deleteTheatre(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatre/(\\d+)", TheatreParams.class);
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)", TheatreParams.class);
             theatreService.deleteTheatre(params.getId());
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Theatre deleted", null);
         } catch (Exception e) {

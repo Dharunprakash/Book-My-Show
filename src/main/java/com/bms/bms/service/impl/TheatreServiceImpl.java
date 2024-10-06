@@ -1,6 +1,7 @@
 package com.bms.bms.service.impl;
 
 import com.bms.bms.dao.TheatreDao;
+import com.bms.bms.dao.impl.TheatreDaoImpl;
 import com.bms.bms.dto.TheatreDTO;
 import com.bms.bms.model.Theatre;
 import com.bms.bms.service.TheatreService;
@@ -11,11 +12,7 @@ import java.util.stream.Collectors;
 
 public class TheatreServiceImpl implements TheatreService {
 
-    private final TheatreDao theatreDao;
-
-    public TheatreServiceImpl(TheatreDao theatreDao) {
-        this.theatreDao = theatreDao;
-    }
+    private final TheatreDao theatreDao = new TheatreDaoImpl();
 
     @Override
     public List<TheatreDTO> getAllTheatres() {
