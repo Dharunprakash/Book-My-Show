@@ -11,4 +11,5 @@ public interface TheatreService {
     TheatreDTO updateTheatre(Long id, TheatreDTO theatreDTO);
     void deleteTheatre(Long id);
     List<ShowDTO> getShowsByTheatreId(Long theatreId);
+    List<TheatreDTO> getTheatresByLocation(String location);
 }

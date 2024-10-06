@@ -169,4 +169,20 @@ public class TheatreDaoImpl implements TheatreDao {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<Theatre> getTheatresByLocation(String location) {
+        try {
+            QueryResult queryResult = queryBuilderUtil.createSelectQuery(tableName, Theatre.builder().location(location).build());
+            ResultSet rs = queryBuilderUtil.executeDynamicSelectQuery(connection, queryResult);
+            List<Theatre> theatres = new ArrayList<>();
+            while (rs.next()) {
+                Theatre theatre = ResultSetMapper.mapResultSetToObject(rs, Theatre.class);
+                theatres.add(theatre);
+            }
+            return theatres;
+        } catch (SQLException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

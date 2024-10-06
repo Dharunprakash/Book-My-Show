@@ -7,10 +7,12 @@ import com.bms.bms.dto.TheatreDTO;
 import com.bms.bms.service.impl.TheatreServiceImpl;
 import com.bms.bms.utils.HttpRequestParser;
 import com.bms.bms.utils.PathParamExtractor;
+import com.bms.bms.utils.QueryParamExtractor;
 import com.bms.bms.utils.ResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,9 +48,23 @@ public class TheatreRouter {
         }
     }
 
+    @NoArgsConstructor
+    @Data
+    public static class TheatreQueryParams {
+        private String location;
+    }
     private void getAllTheatre(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            System.out.println("TheatreRouter getAllTheatre "+req.getQueryString());
+            TheatreQueryParams qp = QueryParamExtractor.extractQueryParams(req, TheatreQueryParams.class);
+            System.out.println("TheatreRouter getAllTheatre "+qp);
+            if (qp.getLocation() != null) {
+                List<TheatreDTO> theatres = theatreService.getTheatresByLocation(qp.getLocation());
+                ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Theatres found", theatres);
+                return;
+            }
             List<TheatreDTO> theatres = theatreService.getAllTheatres();
+
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Theatres found", theatres);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error in getAllTheatre", e);

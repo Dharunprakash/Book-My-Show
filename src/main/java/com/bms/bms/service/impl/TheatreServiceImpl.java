@@ -53,4 +53,12 @@ public class TheatreServiceImpl implements TheatreService {
     public void deleteTheatre(Long id) {
         theatreDao.delete(id);
     }
+
+    @Override
+    public List<TheatreDTO> getTheatresByLocation(String location) {
+        List<Theatre> theatres = theatreDao.getTheatresByLocation(location);
+        return theatres.stream()
+                .map(TheatreDTO::from)
+                .collect(Collectors.toList());
+    }
 }

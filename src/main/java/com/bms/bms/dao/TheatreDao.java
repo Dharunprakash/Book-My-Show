@@ -10,4 +10,5 @@ public interface TheatreDao  extends GenericDao<Theatre, Long> {
     List<TheatreDTO> getAllTheatres();
     TheatreDTO getTheatreById(Long id);
     List<ShowDTO> getShowsByTheatreId(Long theatreId);
+    List<Theatre> getTheatresByLocation(String location);
 }
