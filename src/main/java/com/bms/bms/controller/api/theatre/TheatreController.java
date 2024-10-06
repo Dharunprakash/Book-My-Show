@@ -1,5 +1,8 @@
 package com.bms.bms.controller.api.theatre;
 
+import com.bms.bms.controller.api.theatre.screens.ScreenRouter;
+import com.bms.bms.controller.api.theatre.screens.seats.SeatRouter;
+import com.bms.bms.controller.api.theatre.screens.showtimes.ShowtimeRouter;
 import com.bms.bms.router.Router;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,6 +19,9 @@ public class TheatreController extends HttpServlet {
     public void init() throws ServletException {
         router = new Router("/bms_war_exploded/api/theatres");
         new TheatreRouter().register(router);
+        new ScreenRouter().register(router);
+        new ShowtimeRouter().register(router);
+        new SeatRouter().register(router);
     }
 
     @Override

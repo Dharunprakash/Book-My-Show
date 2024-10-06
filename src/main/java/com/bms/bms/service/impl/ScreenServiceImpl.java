@@ -2,24 +2,23 @@ package com.bms.bms.service.impl;
 
 import com.bms.bms.dao.ScreenDao;
 import com.bms.bms.dao.impl.ScreenDaoImpl;
-import com.bms.bms.dto.ScreenDTO;
+import com.bms.bms.dto.screen.ScreenDTO;
 import com.bms.bms.model.Screen;
 import com.bms.bms.service.ScreenService;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ScreenServiceImpl implements ScreenService {
     private final ScreenDao screenDao;
 
-    public ScreenServiceImpl() throws SQLException, ClassNotFoundException {
+    public ScreenServiceImpl() {
         this.screenDao = new ScreenDaoImpl();
     }
 
     @Override
-    public List<ScreenDTO> getScreensByTheatreId(Long theatreId) {
+    public List<Screen> getScreensByTheatreId(Long theatreId) {
         return screenDao.getScreensByTheatreId(theatreId);
     }
 
@@ -30,15 +29,13 @@ public class ScreenServiceImpl implements ScreenService {
     }
 
     @Override
-    public ScreenDTO createScreen(ScreenDTO screenDTO) {
-        Screen screen = screenDTO.toScreen();
+    public ScreenDTO createScreen(Screen screen) {
         Screen savedScreen = screenDao.save(screen);
         return ScreenDTO.fromScreen(savedScreen);
     }
 
     @Override
-    public ScreenDTO updateScreen(ScreenDTO screenDTO) {
-        Screen screen = screenDTO.toScreen();
+    public ScreenDTO updateScreen(Screen screen) {
         Screen updatedScreen = screenDao.update(screen);
         return ScreenDTO.fromScreen(updatedScreen);
     }

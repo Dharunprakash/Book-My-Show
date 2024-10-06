@@ -1,6 +1,6 @@
 package com.bms.bms.dto;
 
-import com.bms.bms.model.Booking;
+import com.bms.bms.dto.screen.ScreenDTO;
 import lombok.*;
 
 import java.util.List;

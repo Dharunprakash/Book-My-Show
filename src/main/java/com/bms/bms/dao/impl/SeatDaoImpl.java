@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public class SeatDaoImpl implements SeatDao {
     private final Connection connection;
+    private final String tableName = "seat";
     private final QueryBuilderUtil queryBuilderUtil = new QueryBuilderUtil();
 
     public SeatDaoImpl() {
@@ -22,7 +23,7 @@ public class SeatDaoImpl implements SeatDao {
     @Override
     public Seat save(Seat seat) {
         try {
-            QueryResult queryResult = queryBuilderUtil.createInsertQuery("seats", seat);
+            QueryResult queryResult = queryBuilderUtil.createInsertQuery(tableName, seat);
             Long id = queryBuilderUtil.executeDynamicQuery(connection, queryResult, Long.class);
             seat.setId(id);
             return seat;
@@ -34,7 +35,7 @@ public class SeatDaoImpl implements SeatDao {
     @Override
     public Optional<Seat> findById(Long id) {
         try {
-            QueryResult queryResult = queryBuilderUtil.createSelectQuery("seats", Seat.builder().id(id).build());
+            QueryResult queryResult = queryBuilderUtil.createSelectQuery(tableName, Seat.builder().id(id).build());
             ResultSet rs = queryBuilderUtil.executeDynamicSelectQuery(connection, queryResult);
             Seat seat = null;
             if (rs.next()) {
@@ -55,7 +56,7 @@ public class SeatDaoImpl implements SeatDao {
     @Override
     public Seat update(Seat seat) {
         try {
-            QueryResult queryResult = queryBuilderUtil.createUpdateQuery("seats", seat, "id", seat.getId());
+            QueryResult queryResult = queryBuilderUtil.createUpdateQuery(tableName, seat, "id", seat.getId());
             queryBuilderUtil.executeDynamicQuery(connection, queryResult);
             return seat;
         } catch (IllegalAccessException | SQLException e) {
@@ -66,7 +67,7 @@ public class SeatDaoImpl implements SeatDao {
     @Override
     public void delete(Long id) {
         try {
-            QueryResult queryResult = queryBuilderUtil.createDeleteQuery("seats", Seat.builder().id(id).build());
+            QueryResult queryResult = queryBuilderUtil.createDeleteQuery(tableName, Seat.builder().id(id).build());
             queryBuilderUtil.executeDynamicQuery(connection, queryResult);
         } catch (IllegalAccessException | SQLException e) {
             throw new RuntimeException(e);

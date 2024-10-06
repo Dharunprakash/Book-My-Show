@@ -23,6 +23,16 @@ public class ObjectManipulatorUtil {
         }
     }
 
+    public static void setField(Object obj, String fieldName, Object value) throws IllegalAccessException {
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            if (field.getName().equals(fieldName)) {
+                field.set(obj, value);
+            }
+        }
+    }
+
     /**
      * Nullifies the specified field of the given object.
      *

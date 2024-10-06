@@ -63,7 +63,7 @@ public class Router {
     }
 
     private String convertToRegex(String path) {
-        return "^" + pathPrefix + path.replaceAll(":([a-zA-Z][a-zA-Z0-9_]*)", "([^/]+)") + "$";
+        return( "^" + pathPrefix + path.replaceAll(":([a-zA-Z][a-zA-Z0-9_]*)", "([^/]+)") +"/?"+ "$").replaceAll("//", "/");
     }
 
     public void handle(HttpServletRequest req, HttpServletResponse resp) throws IOException {

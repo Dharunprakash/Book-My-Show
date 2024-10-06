@@ -1,4 +1,4 @@
-package com.bms.bms.controller.api.showtimes;
+package com.bms.bms.controller.api.theatre.screens.showtimes;
 
 import com.bms.bms.dto.ShowtimeDTO;
 import com.bms.bms.router.Router;
@@ -30,15 +30,15 @@ public class ShowtimeRouter {
     }
 
     public void register(Router router) {
-        router.get("/theatres/:theatreId/screens/:screenId/showtimes", this::getShowtimes);
-        router.post("/theatres/:theatreId/screens/:screenId/showtimes", this::createShowtime);
-        router.put("/theatres/:theatreId/screens/:screenId/showtimes/:id", this::updateShowtime);
-        router.delete("/theatres/:theatreId/screens/:screenId/showtimes/:id", this::deleteShowtime);
+        router.get("/:theatreId/screens/:screenId/showtimes", this::getShowtimes);
+        router.post("/:theatreId/screens/:screenId/showtimes", this::createShowtime);
+        router.put("/:theatreId/screens/:screenId/showtimes/:id", this::updateShowtime);
+        router.delete("/:theatreId/screens/:screenId/showtimes/:id", this::deleteShowtime);
     }
 
     private void getShowtimes(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatres/(\\d+)/screens/(\\d+)/showtimes", ShowtimeParams.class);
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)/screens/(\\d+)/showtimes", ShowtimeParams.class);
             List<ShowtimeDTO> showtimes = showtimeService.getShowtimesByScreenId(params.getScreenId());
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Showtimes found", showtimes);
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class ShowtimeRouter {
 
     private void updateShowtime(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatres/(\\d+)/screens/(\\d+)/showtimes/(\\d+)", ShowtimeParams.class);
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)/screens/(\\d+)/showtimes/(\\d+)", ShowtimeParams.class);
             ShowtimeDTO showtimeDTO = HttpRequestParser.parse(req, ShowtimeDTO.class);
             showtimeDTO.setId(params.getId());
             ShowtimeDTO updatedShowtime = showtimeService.updateShowtime(showtimeDTO);
@@ -73,7 +73,7 @@ public class ShowtimeRouter {
 
     private void deleteShowtime(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatres/(\\d+)/screens/(\\d+)/showtimes/(\\d+)", ShowtimeParams.class);
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)/screens/(\\d+)/showtimes/(\\d+)", ShowtimeParams.class);
             showtimeService.deleteShowtime(params.getId());
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Showtime deleted", null);
         } catch (Exception e) {

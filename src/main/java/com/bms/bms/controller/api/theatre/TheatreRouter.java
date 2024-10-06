@@ -22,8 +22,8 @@ public class TheatreRouter {
 
     public void register(Router router) {
         router.get("/:id", this::getTheatre);
-        router.get("", this::getAllTheatre);
-        router.post("", this::createTheatre);
+        router.get("/", this::getAllTheatre);
+        router.post("/", this::createTheatre);
         router.put("/:id", this::updateTheatre);
         router.delete("/:id", this::deleteTheatre);
     }

@@ -31,10 +31,10 @@ public class MovieRouter {
     }
 
     public void register(Router router) {
-        router.get("", this::getMovies);
+        router.get("/", this::getMovies);
         router.get("/:movieId", this::getMovieById);
         router.get("/:movieId/screenings", this::getMovieScreenings);
-        router.post("", this::createMovie);
+        router.post("/", this::createMovie);
         router.put("/:movieId", this::updateMovie);
         router.delete("/:movieId", this::deleteMovie);
     }

@@ -53,7 +53,11 @@ public class QueryBuilderUtil {
         StringBuilder query = new StringBuilder("UPDATE ").append(tableName).append(" SET ");
         List<Object> params = new ArrayList<>();
 
+        //store the condition column value in a tveamripable
+        Object conditionColumnValue = null;
+
         if (ignoreConditionColumn) {
+            conditionColumnValue = conditionValue;
             ObjectManipulatorUtil.nullifyField(obj, conditionColumn);  // Nullify the condition column if ignoreConditionColumn is true
         }
 
@@ -62,6 +66,9 @@ public class QueryBuilderUtil {
         query.append(setClause).append(" WHERE ").append(conditionColumn).append(" = ?;");
         params.add(conditionValue);  // Add the condition value
 
+        if (ignoreConditionColumn) {
+            ObjectManipulatorUtil.setField(obj, conditionColumn, conditionColumnValue);  // Reset the condition column value
+        }
         return new QueryResult(query.toString(), params);  // Return query and parameters
     }
 

@@ -10,7 +10,6 @@ import com.bms.bms.service.MovieService;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class MovieServiceImpl implements MovieService {
     private final MovieDao movieDao;

@@ -105,7 +105,7 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public List<ScreeningDTO> getMovieScreenings(Long movieId) {
-        // Implement database logic to fetch screenings for a movie
+
         return null;
     }
 }

@@ -1,4 +1,4 @@
-package com.bms.bms.controller.api.seats;
+package com.bms.bms.controller.api.theatre.screens.seats;
 
 import com.bms.bms.dto.SeatDTO;
 import com.bms.bms.router.Router;
@@ -30,16 +30,16 @@ public class SeatRouter {
     }
 
     public void register(Router router) {
-        router.get("/theatres/:theatreId/screens/:screenId/seats", this::getSeats);
-        router.get("/theatres/:theatreId/screens/:screenId/seats/:seatId", this::getSeatById);
-        router.post("/theatres/:theatreId/screens/:screenId/seats", this::createSeat);
-        router.put("/theatres/:theatreId/screens/:screenId/seats/:seatId", this::updateSeat);
-        router.delete("/theatres/:theatreId/screens/:screenId/seats/:seatId", this::deleteSeat);
+        router.get("/:theatreId/screens/:screenId/seats", this::getSeats);
+        router.get("/:theatreId/screens/:screenId/seats/:seatId", this::getSeatById);
+        router.post("/:theatreId/screens/:screenId/seats", this::createSeat);
+        router.put("/:theatreId/screens/:screenId/seats/:seatId", this::updateSeat);
+        router.delete("/:theatreId/screens/:screenId/seats/:seatId", this::deleteSeat);
     }
 
     private void getSeats(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatres/(\\d+)/screens/(\\d+)/seats", SeatParams.class);
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)/screens/(\\d+)/seats", SeatParams.class);
             List<SeatDTO> seats = seatService.getSeatsByScreenId(params.getScreenId());
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Seats found", seats);
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class SeatRouter {
 
     private void getSeatById(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatres/(\\d+)/screens/(\\d+)/seats/(\\d+)", SeatParams.class);
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)/screens/(\\d+)/seats/(\\d+)", SeatParams.class);
             SeatDTO seat = seatService.getSeatById(params.getSeatId());
             if (seat != null) {
                 ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Seat found", seat);
@@ -76,7 +76,7 @@ public class SeatRouter {
 
     private void updateSeat(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatres/(\\d+)/screens/(\\d+)/seats/(\\d+)", SeatParams.class);
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)/screens/(\\d+)/seats/(\\d+)", SeatParams.class);
             SeatDTO seatDTO = HttpRequestParser.parse(req, SeatDTO.class);
             seatDTO.setId(params.getSeatId());
             SeatDTO updatedSeat = seatService.updateSeat(seatDTO);
@@ -89,7 +89,7 @@ public class SeatRouter {
 
     private void deleteSeat(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/theatres/(\\d+)/screens/(\\d+)/seats/(\\d+)", SeatParams.class);
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)/screens/(\\d+)/seats/(\\d+)", SeatParams.class);
             seatService.deleteSeat(params.getSeatId());
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Seat deleted", null);
         } catch (Exception e) {
