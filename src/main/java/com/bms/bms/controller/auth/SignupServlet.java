@@ -38,10 +38,4 @@ public class SignupServlet extends HttpServlet {
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_BAD_REQUEST, e.getMessage(), null);
         }
     }
-
-    private User parseUserFromJson(String json) {
-        // Implement this method to parse JSON string to User object
-
-        return new User(); // Placeholder implementation
-    }
 }
