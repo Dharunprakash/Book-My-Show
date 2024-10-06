@@ -1,10 +1,13 @@
 package com.bms.bms.dto;
 
+import com.bms.bms.annotations.RelationField;
 import com.bms.bms.model.Booking;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Builder
@@ -14,6 +17,8 @@ import lombok.NoArgsConstructor;
 public class CreateBookingDTO {
     private Long userId;
     private Long showtimeId;
+    @RelationField("seats")
+    private List<Long> seatIds;
 
     public Booking toBooking(){
         return Booking.builder()

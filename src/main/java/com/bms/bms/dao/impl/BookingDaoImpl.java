@@ -30,8 +30,15 @@ public class BookingDaoImpl implements BookingDao {
     public CreateBookingDTO save(CreateBookingDTO booking) {
         try {
             QueryResult queryResult = queryBuilderUtil.createInsertQuery(tableName, booking);
-            Long id = queryBuilderUtil.executeDynamicQuery(connection, queryResult, Long.class);
-            booking.setId(id);
+            Long bookingId = queryBuilderUtil.executeDynamicQuery(connection, queryResult, Long.class);
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into booking_seats(booking_id, seat_id) values (?, ?)");
+            for (Long seatId : booking.getSeatIds()) {
+                preparedStatement.setLong(1, bookingId);
+                preparedStatement.setLong(2, seatId);
+                preparedStatement.addBatch();
+            }
+            System.out.println(bookingId);
+            preparedStatement.executeBatch();
             return booking;
         } catch (IllegalAccessException | SQLException e) {
             throw new RuntimeException(e);
