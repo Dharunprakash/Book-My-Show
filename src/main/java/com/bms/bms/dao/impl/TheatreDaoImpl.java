@@ -104,8 +104,8 @@ public class TheatreDaoImpl implements TheatreDao {
                     shows.add(showDTO);
                     movieIdMap.put(movieDTO.getId(), showDTO);
                 }
-                System.out.println(movieIdMap);
-                System.out.println(movieIdMap.get(movieDTO.getId()));
+//                System.out.println(movieIdMap);
+//                System.out.println(movieIdMap.get(movieDTO.getId()));
                 movieIdMap.get(movieDTO.getId()).getShowtimeDetails().add(screenShowtimeDTO);
             }
             return shows;

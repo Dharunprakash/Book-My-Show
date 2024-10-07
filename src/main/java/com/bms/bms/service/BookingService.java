@@ -12,4 +12,5 @@ public interface BookingService {
     CreateBookingDTO createBooking(CreateBookingDTO bookingDTO);
     BookingDTO updateBooking(Long id, BookingDTO bookingDTO);
     void deleteBooking(Long id);
+    List<BookingDTO> getAllBookingsByUserId(Long userId);
 }

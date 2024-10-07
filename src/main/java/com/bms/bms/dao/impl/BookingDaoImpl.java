@@ -101,15 +101,126 @@ public class BookingDaoImpl implements BookingDao {
     @Override
     public List<BookingDTO> findAll() {
         try {
-            QueryResult queryResult = queryBuilderUtil.createSelectQuery(tableName, BookingDTO.builder().build());
-            ResultSet rs = queryBuilderUtil.executeDynamicSelectQuery(connection, queryResult);
+            String query = "select\n" +
+                    "    b.id,\n" +
+                    "    b.user_id,\n" +
+                    "    t.name as theatre_name,\n" +
+                    "    b.showtime_id,\n" +
+                    "    st.start_time as show_time,\n" +
+                    "    st.price,\n" +
+                    "    s.id as screen_id,\n" +
+                    "    s.name as screen_name,\n" +
+                    "    m.id as movie_id,\n" +
+                    "    m.name as movie_name,\n" +
+                    "    se.seat_number\n" +
+                    "from\n" +
+                    "    booking b\n" +
+                    "join\n" +
+                    "    showtime st on b.showtime_id = st.id\n" +
+                    "join\n" +
+                    "    booking_seats bs on b.id = bs.booking_id\n" +
+                    "join\n" +
+                    "    screen s on st.screen_id = s.id\n" +
+                    "join\n" +
+                    "    seat se on bs.seat_id = se.id\n" +
+                    "join\n" +
+                    "    movie m on st.movie_id = m.id\n" +
+                    "join\n" +
+                    "    theater t on s.theater_id = t.id;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+
             List<BookingDTO> bookings = new ArrayList<>();
+            BookingDTO currentBooking = null;
+            List<Integer> seatNumbers = new ArrayList<>();
+            Long currentBookingId = null;
+
             while (rs.next()) {
-                BookingDTO booking = ResultSetMapper.mapResultSetToObject(rs, BookingDTO.class);
-                bookings.add(booking);
+                Long bookingId = rs.getLong("id");
+                if (currentBookingId == null || !currentBookingId.equals(bookingId)) {
+                    if (currentBooking != null) {
+                        currentBooking.setBookedSeats(seatNumbers);
+                        bookings.add(currentBooking);
+                    }
+                    currentBooking = ResultSetMapper.mapResultSetToObject(rs, BookingDTO.class);
+                    seatNumbers = new ArrayList<>();
+                    currentBookingId = bookingId;
+                }
+                seatNumbers.add(rs.getInt("seat_number"));
             }
+
+            if (currentBooking != null) {
+                currentBooking.setBookedSeats(seatNumbers);
+                bookings.add(currentBooking);
+            }
+
             return bookings;
-        } catch (IllegalAccessException | SQLException e) {
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Override
+    public List<BookingDTO> findAllByUserId(Long userId) {
+        try {
+            String query = "select\n" +
+                    "    b.id,\n" +
+                    "    b.user_id,\n" +
+                    "    t.name as theatre_name,\n" +
+                    "    b.showtime_id,\n" +
+                    "    st.start_time as show_time,\n" +
+                    "    st.price,\n" +
+                    "    s.id as screen_id,\n" +
+                    "    s.name as screen_name,\n" +
+                    "    m.id as movie_id,\n" +
+                    "    m.name as movie_name,\n" +
+                    "    se.seat_number\n" +
+                    "from\n" +
+                    "    booking b\n" +
+                    "join\n" +
+                    "    showtime st on b.showtime_id = st.id\n" +
+                    "join\n" +
+                    "    booking_seats bs on b.id = bs.booking_id\n" +
+                    "join\n" +
+                    "    screen s on st.screen_id = s.id\n" +
+                    "join\n" +
+                    "    seat se on bs.seat_id = se.id\n" +
+                    "join\n" +
+                    "    movie m on st.movie_id = m.id\n" +
+                    "join\n" +
+                    "    theater t on s.theater_id = t.id\n" +
+                    "where\n" +
+                    "    b.user_id=?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, userId);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            List<BookingDTO> bookings = new ArrayList<>();
+            BookingDTO currentBooking = null;
+            List<Integer> seatNumbers = new ArrayList<>();
+            Long currentBookingId = null;
+
+            while (rs.next()) {
+                Long bookingId = rs.getLong("id");
+                if (currentBookingId == null || !currentBookingId.equals(bookingId)) {
+                    if (currentBooking != null) {
+                        currentBooking.setBookedSeats(seatNumbers);
+                        bookings.add(currentBooking);
+                    }
+                    currentBooking = ResultSetMapper.mapResultSetToObject(rs, BookingDTO.class);
+                    seatNumbers = new ArrayList<>();
+                    currentBookingId = bookingId;
+                }
+                seatNumbers.add(rs.getInt("seat_number"));
+            }
+
+            if (currentBooking != null) {
+                currentBooking.setBookedSeats(seatNumbers);
+                bookings.add(currentBooking);
+            }
+
+            return bookings;
+
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

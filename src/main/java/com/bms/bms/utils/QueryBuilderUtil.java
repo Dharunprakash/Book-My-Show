@@ -272,10 +272,10 @@ public class QueryBuilderUtil {
         for (Field field : fields) {
             field.setAccessible(true);
             Object value = field.get(obj);
-            if (field.isAnnotationPresent(RelationField.class)) {
-                System.out.println("Skipping field with @RelationField annotation");
-                continue; // Skip fields with @RelationField annotation
-            }
+//            if (field.isAnnotationPresent(RelationField.class)) {
+//                System.out.println("Skipping field with @RelationField annotation");
+//                continue; // Skip fields with @RelationField annotation
+//            }
 
             if (value != null) {  // Only include non-null fields
                 if (!firstCondition) {

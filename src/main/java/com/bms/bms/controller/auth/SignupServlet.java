@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 
-@WebServlet("/auth/register")
+@WebServlet("/auth/signup")
 public class SignupServlet extends HttpServlet {
 
     private final AuthService authService;

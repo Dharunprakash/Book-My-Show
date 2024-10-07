@@ -11,12 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
-    private  final Connection connection;
+    private  final Connection connection =DataBaseUtil.getConnection();
     private final QueryBuilderUtil queryBuilderUtil = new QueryBuilderUtil();
 
-    public UserDaoImpl() {
-        this.connection = DataBaseUtil.getConnection();
-    }
 
     @Override
     public User save(User user) {

@@ -7,10 +7,12 @@ import com.bms.bms.service.BookingService;
 import com.bms.bms.service.impl.BookingServiceImpl;
 import com.bms.bms.utils.HttpRequestParser;
 import com.bms.bms.utils.PathParamExtractor;
+import com.bms.bms.utils.QueryParamExtractor;
 import com.bms.bms.utils.ResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,8 +35,23 @@ public class BookingsRouter {
         router.delete("/:id", this::deleteBooking);
     }
 
+
+    @NoArgsConstructor
+    @Data
+    public static class BookingQueryParams {
+        private String userId;
+    }
     private void getAllBookings(HttpServletRequest req, HttpServletResponse resp) {
         try {
+
+            BookingQueryParams qp = QueryParamExtractor.extractQueryParams(req, BookingQueryParams.class);
+            if(qp.getUserId() != null) {
+                List<BookingDTO> bookings = bookingService.getAllBookingsByUserId(Long.parseLong(qp.getUserId()));
+                ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Bookings found", bookings);
+                return;
+            }
+
+
             List<BookingDTO> bookings = bookingService.getAllBookings();
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Bookings found", bookings);
         } catch (Exception e) {

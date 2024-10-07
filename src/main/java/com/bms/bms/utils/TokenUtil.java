@@ -7,8 +7,8 @@ import io.jsonwebtoken.Claims;
 import java.util.Date;
 
 public class TokenUtil {
-    private static final String SECRET_KEY = "your_secret_key";
-    private static final long EXPIRATION_TIME = 1800000; // 30 minutes
+    private static final String SECRET_KEY = "EAqgTDXdXWvKvgAeYR+7p+87S0FNQlZlj9IjB0Rwxto=";
+    private static final long EXPIRATION_TIME = 1800000;
 
     public static String generateToken(String userIdRole) {
         return Jwts.builder()

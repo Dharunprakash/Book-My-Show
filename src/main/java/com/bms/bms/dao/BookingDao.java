@@ -12,4 +12,5 @@ public interface BookingDao {
     List<BookingDTO> findAll();
     BookingDTO update(BookingDTO booking);
     void delete(Long id);
+    List<BookingDTO> findAllByUserId(Long userId);
 }

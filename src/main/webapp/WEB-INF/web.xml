@@ -20,4 +20,13 @@
         <filter-name>RoleBasedAuthorizationFilter</filter-name>
         <url-pattern>/api/*</url-pattern>
     </filter-mapping>
+
+    <filter>
+        <filter-name>BookingFilter</filter-name>
+        <filter-class>com.bms.bms.filter.validator.BookingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>BookingFilter</filter-name>
+        <url-pattern>/api/booking</url-pattern>
+    </filter-mapping>
 </web-app>

@@ -41,4 +41,9 @@ public class BookingServiceImpl implements BookingService {
     public void deleteBooking(Long id) {
         bookingDao.delete(id);
     }
+
+    @Override
+    public List<BookingDTO> getAllBookingsByUserId(Long userId) {
+        return bookingDao.findAllByUserId(userId);
+    }
 }
