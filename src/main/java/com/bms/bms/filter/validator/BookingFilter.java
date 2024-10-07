@@ -14,7 +14,6 @@ import com.bms.bms.utils.ResponseUtil;
 import java.io.IOException;
 import java.util.List;
 
-@WebFilter("/api/bookings")
 public class BookingFilter implements Filter {
     Validator<Long> userIdValidator = new ValidatorBuilder<Long>()
             .addNotNull("User ID cannot be null")
@@ -48,7 +47,7 @@ public class BookingFilter implements Filter {
         try {
             CreateBookingDTO createDTO = HttpRequestParser.parse(request, CreateBookingDTO.class);
             System.out.println("isValidating1");
-            if (createDTO != null && isValidCreateBooking(createDTO)) {
+            if (createDTO != null && isValidCreateBooking(createDTO,request, response)) {
                 System.out.println("isValidating");
                 chain.doFilter(request, response);
             } else {
@@ -59,7 +58,7 @@ public class BookingFilter implements Filter {
         }
     }
 
-    private boolean isValidCreateBooking(CreateBookingDTO dto) {
+    private boolean isValidCreateBooking(CreateBookingDTO dto,HttpServletRequest req, HttpServletResponse response) throws IOException {
 
         try {
             userIdValidator.validate(dto.getUserId());
@@ -67,6 +66,7 @@ public class BookingFilter implements Filter {
             seatIdsValidator.validate(dto.getSeatIds());
             return true;
         } catch (Exception e) {
+            ResponseUtil.sendResponse(req, response, HttpServletResponse.SC_BAD_REQUEST, e.getMessage(), null);
             return false;
         }
     }

@@ -19,14 +19,14 @@ public class TheatreServiceImpl implements TheatreService {
     public List<TheatreDTO> getAllTheatres() {
         List<Theatre> theatres = theatreDao.findAll();
         return theatres.stream()
-                .map(TheatreDTO::from)
+                .map(TheatreDTO::fromTheatre)
                 .collect(Collectors.toList());
     }
 
     @Override
     public TheatreDTO getTheatreById(Long id) {
         Optional<Theatre> theatre = theatreDao.findById(id);
-        return theatre.map(TheatreDTO::from).orElse(null);
+        return theatre.map(TheatreDTO::fromTheatre).orElse(null);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class TheatreServiceImpl implements TheatreService {
     public TheatreDTO createTheatre(TheatreDTO theatreDTO) {
         Theatre theatre = theatreDTO.toTheatre();
         Theatre savedTheatre = theatreDao.save(theatre);
-        return TheatreDTO.from(savedTheatre);
+        return TheatreDTO.fromTheatre(savedTheatre);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class TheatreServiceImpl implements TheatreService {
         Theatre theatre = theatreDTO.toTheatre();
         theatre.setId(id);
         Theatre updatedTheatre = theatreDao.update(theatre);
-        return TheatreDTO.from(updatedTheatre);
+        return TheatreDTO.fromTheatre(updatedTheatre);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class TheatreServiceImpl implements TheatreService {
     public List<TheatreDTO> getTheatresByLocation(String location) {
         List<Theatre> theatres = theatreDao.getTheatresByLocation(location);
         return theatres.stream()
-                .map(TheatreDTO::from)
+                .map(TheatreDTO::fromTheatre)
                 .collect(Collectors.toList());
     }
 }

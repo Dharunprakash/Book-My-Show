@@ -27,6 +27,6 @@
     </filter>
     <filter-mapping>
         <filter-name>BookingFilter</filter-name>
-        <url-pattern>/api/booking</url-pattern>
+        <url-pattern>/api/bookings</url-pattern>
     </filter-mapping>
 </web-app>

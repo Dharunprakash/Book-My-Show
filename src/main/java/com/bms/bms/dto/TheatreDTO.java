@@ -1,5 +1,6 @@
 package com.bms.bms.dto;
 
+import com.bms.bms.annotations.JoinMappingId;
 import com.bms.bms.model.Theatre;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TheatreDTO {
+    @JoinMappingId("theater_id")
     private Long id;
+    @JoinMappingId("theatre_name")
     private String name;
     private String location;
     private String address;
@@ -25,7 +28,7 @@ public class TheatreDTO {
                 .build();
     }
 
-    public static TheatreDTO from(Theatre theatre) {
+    public static TheatreDTO fromTheatre(Theatre theatre) {
         return TheatreDTO.builder()
                 .id(theatre.getId())
                 .name(theatre.getName())

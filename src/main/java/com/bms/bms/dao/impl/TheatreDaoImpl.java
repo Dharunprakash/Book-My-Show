@@ -143,7 +143,7 @@ public class TheatreDaoImpl implements TheatreDao {
             List<TheatreDTO> theatres = new ArrayList<>();
             while (rs.next()) {
                 Theatre theatre = ResultSetMapper.mapResultSetToObject(rs, Theatre.class);
-                TheatreDTO theatreDTO = TheatreDTO.from(theatre);
+                TheatreDTO theatreDTO = TheatreDTO.fromTheatre(theatre);
                 theatres.add(theatreDTO);
             }
             return theatres;
@@ -161,7 +161,7 @@ public class TheatreDaoImpl implements TheatreDao {
             if (rs.next()) {
                 theatre = ResultSetMapper.mapResultSetToObject(rs, Theatre.class);
             }
-            return TheatreDTO.from(theatre);
+            return TheatreDTO.fromTheatre(theatre);
         } catch (IllegalAccessException | SQLException e) {
             throw new RuntimeException(e);
         }

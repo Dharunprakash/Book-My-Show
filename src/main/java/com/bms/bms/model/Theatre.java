@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class Theatre {
-    @JoinMappingId("theatre_id")
+    @JoinMappingId("theater_id")
     private Long id;
     private String name;
     private String location;

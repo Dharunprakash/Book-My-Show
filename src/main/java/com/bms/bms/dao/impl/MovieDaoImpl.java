@@ -1,17 +1,18 @@
 package com.bms.bms.dao.impl;
 
 import com.bms.bms.dao.MovieDao;
-import com.bms.bms.dto.MovieDTO;
-import com.bms.bms.dto.ScreeningDTO;
+import com.bms.bms.dto.*;
+import com.bms.bms.dto.screen.ScreenDTO;
 import com.bms.bms.model.Movie;
+import com.bms.bms.model.Theatre;
 import com.bms.bms.utils.*;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 
 public class MovieDaoImpl implements MovieDao {
     private final Connection connection;
@@ -105,7 +106,52 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public List<ScreeningDTO> getMovieScreenings(Long movieId) {
+        try {
+            String sql = "SELECT t.id as theater_id," +
+                    "       t.name as theatre_name," +
+                    "       t.location," +
+                    "       t.address," +
+                    "       s.id as screen_id," +
+                    "       s.name as screen_name," +
+                    "       st.id as showtime_id," +
+                    "       st.start_time," +
+                    "       st.show_date," +
+                    "       st.price " +
+                    "FROM theater t " +
+                    "JOIN screen s ON t.id = s.theater_id " +
+                    "JOIN showtime st ON s.id = st.screen_id " +
+                    "JOIN movie m ON st.movie_id = m.id " +
+                    "WHERE m.id = ?";
 
-        return null;
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, movieId);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            List<ScreeningDTO> screenings = new ArrayList<>();
+            Map<Long, ScreeningDTO> theatreIdMap = new HashMap<>();
+
+            while (rs.next()) {
+                TheatreDTO theatreDTO = ResultSetMapper.mapResultSetToObject(rs, TheatreDTO.class, true);
+                ScreenDTO screenDTO = ResultSetMapper.mapResultSetToObject(rs, ScreenDTO.class, true);
+                ShowtimeDTO showtimeDTO = ResultSetMapper.mapResultSetToObject(rs, ShowtimeDTO.class, true);
+
+                ScreenShowtimeDTO screenShowtimeDTO = ScreenShowtimeDTO.fromShowtimeDTO(showtimeDTO);
+                screenShowtimeDTO.setScreen(screenDTO);
+
+                if (!theatreIdMap.containsKey(theatreDTO.getId())) {
+                    ScreeningDTO screeningDTO = ScreeningDTO.fromTheatreDTO(theatreDTO);
+                    screeningDTO.setShowtimeDetails(new ArrayList<>());
+                    screenings.add(screeningDTO);
+                    theatreIdMap.put(theatreDTO.getId(), screeningDTO);
+                }
+
+                theatreIdMap.get(theatreDTO.getId()).getShowtimeDetails().add(screenShowtimeDTO);
+            }
+
+            return screenings;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+
 }
