@@ -10,6 +10,7 @@ import com.bms.bms.service.MovieService;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class MovieServiceImpl implements MovieService {
     private final MovieDao movieDao;
@@ -51,5 +52,12 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void deleteMovie(Long id) {
         movieDao.delete(id);
+    }
+
+    public List<MovieDTO> findAll() {
+       List<Movie> movies = movieDao.findAll();
+         return movies.stream()
+                .map(MovieDTO::fromMovie)
+                .collect(Collectors.toList());
     }
 }

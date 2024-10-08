@@ -7,10 +7,12 @@ import com.bms.bms.service.MovieService;
 import com.bms.bms.service.impl.MovieServiceImpl;
 import com.bms.bms.utils.HttpRequestParser;
 import com.bms.bms.utils.PathParamExtractor;
+import com.bms.bms.utils.QueryParamExtractor;
 import com.bms.bms.utils.ResponseUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -39,10 +41,21 @@ public class MovieRouter {
         router.delete("/:movieId", this::deleteMovie);
     }
 
+    @NoArgsConstructor
+    @Data
+    public static class MovieDateQueryParams {
+        private String date;
+    }
+
     private void getMovies(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            String date = req.getParameter("date");
-            List<MovieDTO> movies = movieService.getMovies(date);
+
+            MovieDateQueryParams qp = QueryParamExtractor.extractQueryParams(req, MovieDateQueryParams.class);
+            if(qp.getDate()!=null) {
+                List<MovieDTO> movies = movieService.getMovies(qp.getDate());
+                ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Movies found", movies);
+            }
+            List<MovieDTO> movies = movieService.findAll();
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Movies found", movies);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Error in getMovies", e);
@@ -91,6 +104,7 @@ public class MovieRouter {
         try {
             var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)", MovieParams.class);
             MovieDTO movieDTO = HttpRequestParser.parse(req, MovieDTO.class);
+
             movieDTO.setId(params.getId());
             MovieDTO updatedMovie = movieService.updateMovie(movieDTO);
             ResponseUtil.sendResponse(req, resp, HttpServletResponse.SC_OK, "Movie updated", updatedMovie);

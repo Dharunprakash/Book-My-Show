@@ -21,6 +21,7 @@ public class QueryParamExtractor {
 
         Map<String, String> queryParams = new HashMap<>();
         String[] pairs = queryString.split("&");
+
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");
             if (keyValue.length > 1) {
@@ -29,6 +30,10 @@ public class QueryParamExtractor {
                 queryParams.put(keyValue[0], "");
             }
         }
+//        for(Map.Entry<String, String> entry : queryParams.entrySet()) {
+//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+//        }
+
 
         T instance = clazz.getDeclaredConstructor().newInstance();
         for (Field field : clazz.getDeclaredFields()) {

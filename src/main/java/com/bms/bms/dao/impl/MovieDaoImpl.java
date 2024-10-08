@@ -90,8 +90,19 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public List<MovieDTO> getMovies(String date) {
         try {
-            QueryResult queryResult = queryBuilderUtil.createSelectQuery(tableName, Movie.builder().releaseDate(date).build());
-            ResultSet rs = queryBuilderUtil.executeDynamicSelectQuery(connection, queryResult);
+            String sql = "select DISTINCT m.id," +
+                    "       m.name," +
+                    "       m.language," +
+                    "       m.genre," +
+                    "       m.duration," +
+                    "       m.release_date," +
+                    "       m.rating " +
+                    "from movie m " +
+                    "join showtime st on m.id = st.movie_id " +
+                    "where st.show_date = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, date);
+            ResultSet rs = preparedStatement.executeQuery();
             List<MovieDTO> movies = new ArrayList<>();
             while (rs.next()) {
                 Movie movie = ResultSetMapper.mapResultSetToObject(rs, Movie.class);
@@ -99,7 +110,7 @@ public class MovieDaoImpl implements MovieDao {
                 movies.add(movieDTO);
             }
             return movies;
-        } catch (IllegalAccessException | SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

@@ -29,8 +29,11 @@ public class TheatreRouter {
         router.post("/", this::createTheatre);
         router.put("/:id", this::updateTheatre);
         router.get("/:id/shows", this::getShows);
+        router.get("/:id/shows/:showId", this::getShowById);
         router.delete("/:id", this::deleteTheatre);
     }
+
+
 
     private void getTheatre(HttpServletRequest req, HttpServletResponse resp) {
         try {
@@ -117,6 +120,21 @@ public class TheatreRouter {
             LOGGER.log(Level.SEVERE, "Error in deleteTheatre", e);
             handleException(req, resp, e);
         }
+    }
+    public static class showtimeParams {
+        private Long id;
+    }
+    private void getShowById(HttpServletRequest req, HttpServletResponse resp) {
+
+        try {
+            var params = PathParamExtractor.extractPathParams(req.getPathInfo(), "/(\\d+)/shows/(\\d+)", showtimeParams.class);
+
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error in getShowById", e);
+            handleException(req, resp, e);
+        }
+
+
     }
 
     private void handleException(HttpServletRequest req, HttpServletResponse resp, Exception e) {

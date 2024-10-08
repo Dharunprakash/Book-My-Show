@@ -3,6 +3,7 @@ package com.bms.bms.service.impl;
 import com.bms.bms.dao.ShowtimeDao;
 import com.bms.bms.dao.impl.ShowtimeDaoImpl;
 import com.bms.bms.dto.ShowtimeDTO;
+import com.bms.bms.dto.ShowtimeSeatsDTO;
 import com.bms.bms.model.Showtime;
 import com.bms.bms.service.ShowtimeService;
 
@@ -23,9 +24,10 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     }
 
     @Override
-    public ShowtimeDTO getShowtimeById(Long id) {
-        Optional<Showtime> showtime = showtimeDao.findById(id);
-        return showtime.map(ShowtimeDTO::fromShowtime).orElse(null);
+    public ShowtimeSeatsDTO getShowtimeById(Long id) {
+
+        return showtimeDao.getShowtimeById(id);
+
     }
 
     @Override
@@ -45,5 +47,10 @@ public class ShowtimeServiceImpl implements ShowtimeService {
     @Override
     public void deleteShowtime(Long id) {
         showtimeDao.delete(id);
+    }
+
+    @Override
+    public List<ShowtimeDTO> getShowtimesByScreenIdAndDate(Long screenId, String date) {
+        return showtimeDao.getShowtimesByScreenIdAndDate(screenId, date);
     }
 }

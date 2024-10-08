@@ -67,7 +67,7 @@ public class ResultSetMapper {
                 if (value != null) {
                     Function<Object, ?> converter = typeConverters.get(field.getType());
                     if (converter != null) {
-                        System.out.println("Converter found for field: " + field.getName()+" "+field.getType());
+//                        System.out.println("Converter found for field: " + field.getName()+" "+field.getType());
                         field.set(instance, converter.apply(value));
                     } else if (field.getType().isEnum()) {
                         @SuppressWarnings("unchecked")

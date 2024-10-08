@@ -35,9 +35,9 @@ public class BookingFilter implements Filter {
         String method = httpRequest.getMethod();
 
         CachedBodyHttpServletRequest cachedRequest = new CachedBodyHttpServletRequest(httpRequest);
-        System.out.println("HEY I'm A filter: BookingFilter");
+        System.out.println("filter: BookingFilter");
         if ("POST".equals(method)) {
-            validateCreateBookingRequest(cachedRequest, httpResponse, chain);
+            validateCreateBookingRequest(cachedRequest,httpResponse, chain);
         } else {
             chain.doFilter(request, response);
         }
